@@ -8,7 +8,7 @@
         public string Estado { get; set; } = string.Empty;
 
         // Relación con Cliente
-        public Cliente Cliente { get; set; }
+        public Cliente? Cliente { get; set; }
     }
 }
 
