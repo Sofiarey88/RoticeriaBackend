@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Roticeria3ero.Modelos;
 using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 public class RoticeriaContex : DbContext
 {
@@ -26,6 +24,11 @@ public class RoticeriaContex : DbContext
             .WithMany()
             .HasForeignKey(p => p.ClienteId);
 
+        modelBuilder.Entity<Pedido>()
+            .HasOne(p => p.Producto) // Configuración de relación Producto
+            .WithMany()
+            .HasForeignKey(p => p.ProductoId);
+
         // Datos semilla para Clientes
         modelBuilder.Entity<Cliente>().HasData(
             new Cliente { Id = 1, Nombre = "Juan Pérez", Direccion = "Calle Falsa 123", Telefono = "123456789", Email = "juan.perez@example.com" },
@@ -35,16 +38,16 @@ public class RoticeriaContex : DbContext
 
         // Datos semilla para Productos
         modelBuilder.Entity<Producto>().HasData(
-            new Producto { Id = 1, Nombre = "Pizza Margherita", Descripcion = "Pizza con salsa de tomate, mozzarella y albahaca", Precio= 555},
-            new Producto { Id = 2, Nombre = "Empanada de Carne", Descripcion = "Empanada rellena de carne picada",Precio=1234},
-            new Producto { Id = 3, Nombre = "Ensalada César", Descripcion = "Ensalada con lechuga, pollo, crutones y aderezo César",Precio=4090 }
+            new Producto { Id = 1, Nombre = "Pizza Margherita", Descripcion = "Pizza con salsa de tomate, mozzarella y albahaca", Precio = 555 },
+            new Producto { Id = 2, Nombre = "Empanada de Carne", Descripcion = "Empanada rellena de carne picada", Precio = 1234 },
+            new Producto { Id = 3, Nombre = "Ensalada César", Descripcion = "Ensalada con lechuga, pollo, crutones y aderezo César", Precio = 4090 }
         );
 
-        // Datos semilla para Pedidos
+        // Datos semilla para Pedidos (con ProductoId)
         modelBuilder.Entity<Pedido>().HasData(
-            new Pedido { Id = 1, ClienteId = 1, Fecha = DateTime.Now, Estado = "Pendiente" },
-            new Pedido { Id = 2, ClienteId = 2, Fecha = DateTime.Now, Estado = "En Proceso" },
-            new Pedido { Id = 3, ClienteId = 3, Fecha = DateTime.Now, Estado = "Completado" }
+            new Pedido { Id = 1, ClienteId = 1, ProductoId = 1, Fecha = DateTime.Now, Estado = "Pendiente" },
+            new Pedido { Id = 2, ClienteId = 2, ProductoId = 2, Fecha = DateTime.Now, Estado = "En Proceso" },
+            new Pedido { Id = 3, ClienteId = 3, ProductoId = 3, Fecha = DateTime.Now, Estado = "Completado" }
         );
 
         // Datos semilla para Proveedores

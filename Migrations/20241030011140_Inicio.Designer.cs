@@ -11,15 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Roticeria3ero.Migrations
 {
     [DbContext(typeof(RoticeriaContex))]
-    [Migration("20240830013659_InicioRoti")]
-    partial class InicioRoti
+    [Migration("20241030011140_Inicio")]
+    partial class Inicio
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -97,9 +97,14 @@ namespace Roticeria3ero.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
+
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("Pedidos");
 
@@ -109,21 +114,24 @@ namespace Roticeria3ero.Migrations
                             Id = 1,
                             ClienteId = 1,
                             Estado = "Pendiente",
-                            Fecha = new DateTime(2024, 8, 29, 22, 36, 58, 291, DateTimeKind.Local).AddTicks(347)
+                            Fecha = new DateTime(2024, 10, 29, 22, 11, 38, 900, DateTimeKind.Local).AddTicks(9433),
+                            ProductoId = 1
                         },
                         new
                         {
                             Id = 2,
                             ClienteId = 2,
                             Estado = "En Proceso",
-                            Fecha = new DateTime(2024, 8, 29, 22, 36, 58, 291, DateTimeKind.Local).AddTicks(371)
+                            Fecha = new DateTime(2024, 10, 29, 22, 11, 38, 900, DateTimeKind.Local).AddTicks(9451),
+                            ProductoId = 2
                         },
                         new
                         {
                             Id = 3,
                             ClienteId = 3,
                             Estado = "Completado",
-                            Fecha = new DateTime(2024, 8, 29, 22, 36, 58, 291, DateTimeKind.Local).AddTicks(373)
+                            Fecha = new DateTime(2024, 10, 29, 22, 11, 38, 900, DateTimeKind.Local).AddTicks(9508),
+                            ProductoId = 3
                         });
                 });
 
@@ -229,7 +237,15 @@ namespace Roticeria3ero.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Roticeria3ero.Modelos.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Cliente");
+
+                    b.Navigation("Producto");
                 });
 #pragma warning restore 612, 618
         }

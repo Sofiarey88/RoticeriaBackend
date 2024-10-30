@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Roticeria3ero.Migrations
 {
     /// <inheritdoc />
-    public partial class InicioRoti : Migration
+    public partial class Inicio : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,6 +84,7 @@ namespace Roticeria3ero.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ClienteId = table.Column<int>(type: "int", nullable: false),
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Estado = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -95,6 +96,12 @@ namespace Roticeria3ero.Migrations
                         name: "FK_Pedidos_Clientes_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "Clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pedidos_Productos_ProductoId",
+                        column: x => x.ProductoId,
+                        principalTable: "Productos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -131,18 +138,23 @@ namespace Roticeria3ero.Migrations
 
             migrationBuilder.InsertData(
                 table: "Pedidos",
-                columns: new[] { "Id", "ClienteId", "Estado", "Fecha" },
+                columns: new[] { "Id", "ClienteId", "Estado", "Fecha", "ProductoId" },
                 values: new object[,]
                 {
-                    { 1, 1, "Pendiente", new DateTime(2024, 8, 29, 22, 36, 58, 291, DateTimeKind.Local).AddTicks(347) },
-                    { 2, 2, "En Proceso", new DateTime(2024, 8, 29, 22, 36, 58, 291, DateTimeKind.Local).AddTicks(371) },
-                    { 3, 3, "Completado", new DateTime(2024, 8, 29, 22, 36, 58, 291, DateTimeKind.Local).AddTicks(373) }
+                    { 1, 1, "Pendiente", new DateTime(2024, 10, 29, 22, 11, 38, 900, DateTimeKind.Local).AddTicks(9433), 1 },
+                    { 2, 2, "En Proceso", new DateTime(2024, 10, 29, 22, 11, 38, 900, DateTimeKind.Local).AddTicks(9451), 2 },
+                    { 3, 3, "Completado", new DateTime(2024, 10, 29, 22, 11, 38, 900, DateTimeKind.Local).AddTicks(9508), 3 }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pedidos_ClienteId",
                 table: "Pedidos",
                 column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pedidos_ProductoId",
+                table: "Pedidos",
+                column: "ProductoId");
         }
 
         /// <inheritdoc />
@@ -152,13 +164,13 @@ namespace Roticeria3ero.Migrations
                 name: "Pedidos");
 
             migrationBuilder.DropTable(
-                name: "Productos");
-
-            migrationBuilder.DropTable(
                 name: "Proveedores");
 
             migrationBuilder.DropTable(
                 name: "Clientes");
+
+            migrationBuilder.DropTable(
+                name: "Productos");
         }
     }
 }
