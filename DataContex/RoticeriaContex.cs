@@ -56,4 +56,6 @@ public class RoticeriaContex : DbContext
             new Proveedor { Id = 2, Nombre = "Frutas y Verduras SRL", Contacto = "Luis Martínez", Telefono = "444555666", Email = "luis.martinez@frutasyverduras.com" }
         );
     }
+
+public DbSet<Roticeria3ero.Modelos.Usuario> Usuario { get; set; } = default!;
 }
